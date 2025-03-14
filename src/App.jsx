@@ -1,17 +1,15 @@
-import { BsGraphDown } from "react-icons/bs";
-import "./App.css";
-import ProductCard from "./components/productCard";
-import { GoGraph } from "react-icons/go";
-import { CiBookmark } from "react-icons/ci";
-import { CiSpeaker } from "react-icons/ci";
-import { CiUser } from "react-icons/ci";
-import AdminPage from "./components/adminPage";
+import AdminPage from "./pages/admin/adminPage";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import HomePage from "./pages/home/homePage";
 
 function App() {
   return (
-    <div>
-      <AdminPage />
-    </div>
+    <BrowserRouter>
+      <Routes path="/*">
+      <Route path="/admin/*" element={<AdminPage/>}/>
+      <Route path="/*" element={<HomePage/>}/>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
