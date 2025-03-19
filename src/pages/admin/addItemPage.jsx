@@ -10,6 +10,7 @@ export default function AddItemPage() {
   const [productCategory, setProductCategory] = useState("audio");
   const [productDimensions, setProductDimensions] = useState("");
   const [productDescription, setProductDescription] = useState("");
+  const navigate = useNavigate();
 
   async function handleAddItem() {
     console.log(
@@ -41,6 +42,7 @@ export default function AddItemPage() {
           }
         );
         toast.success(result.data.message);
+        navigate("/admin/items");
       } catch (err) {
         toast.error(err.response.data.error);
       }
