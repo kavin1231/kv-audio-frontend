@@ -7,40 +7,34 @@ import { useNavigate } from "react-router-dom";
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   function handleOnSubmit(e) {
     e.preventDefault();
     console.log(email, password);
 
-    axios.post("http://localhost:3005/api/users/login", 
-        {
-            email:email,
-            password:password
+    axios
+      .post("http://localhost:3005/api/users/login", {
+        email: email,
+        password: password,
+      })
+      .then((res) => {
+        console.log(res);
+        toast.success("Login success");
+        const user = res.data.user;
+
+        localStorage.setItem("token", res.data.token);
+
+        if (user.role === "admin") {
+          navigate("/admin/");
+        } else {
+          navigate("/");
         }
-    ).then((res)=>{
-        console.log(res)
-        toast.success("Login success")
-        const user = res.data.user
-
-        if(user.role==="admin"){
-            navigate("/admin/")
-        }else{
-            navigate("/")
-        }
-
-    }).catch((err)=>{
-        console.log(err)
-        toast.error(err.response.data.error)
-    })
-
-
-
-
-
-
-
-
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err.response.data.error);
+      });
   }
   return (
     <div className="bg-picture w-full h-screen flex justify-center items-center">
