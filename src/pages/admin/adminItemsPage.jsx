@@ -1,11 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { CiCirclePlus } from "react-icons/ci";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function AdminItemsPage() {
   const [items, setItems] = useState([]);
   const [itemsLoaded,setItemsLoaded]=useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
 
@@ -63,8 +64,10 @@ export default function AdminItemsPage() {
             </tr>
           </thead>
           <tbody>
-            {items.map((product) => (
-              <tr key={product.key} className="border-b hover:bg-gray-100">
+            {items.map((product, index) => (
+              <tr key={product.key} className={`border ${
+                index % 2 === 0 ? "bg-gray-50" : "bg-white"
+              } hover:bg-gray-200 transition-all`}>
                 <td className="p-4">{product.key}</td>
                 <td className="p-4">{product.name}</td>
                 <td className="p-4">${product.price.toFixed(2)}</td>
@@ -76,12 +79,14 @@ export default function AdminItemsPage() {
                   </span>
                 </td>
                 <td className="flex p-4 gap-2">
-                  <Link to={`/admin/items/edit/${product.key}`}>
-                  <button
+                
+                  <button onClick={()=>{
+                    navigate('/admin/items/edit',{state:product})
+                  }}
                     className="bg-blue-500 rounded-md text-white hover:bg-blue-700 px-3 py-1 transition">
                     Edit
                   </button>
-                  </Link>
+              
                   <button
                     className="bg-red-500 rounded-md text-white hover:bg-red-700 px-3 py-1"
                     onClick={() => handleDelete(product.key)}
